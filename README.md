@@ -3,8 +3,11 @@ All documentation for the workshop is best viewed from the github.io pages
 [Documentation](https://ucdavis-bioinformatics-training.github.io/2022-October-Introduction-to-R-for-Bioinformatics/)
 
 Introduction to R for Bioinformatics
+
 Oct 24, 26, 28 from 2:00 pm to 5:00 pm
+
 Organizer - Bioinformatics Core
+
 Contact - UC Davis Bioinformatics Core, training.bioinformatics@ucdavis.edu
 
 Get off to a good start in bioinformatics with this three-part online workshop in R. This workshop lays the foundation for successful bioinformatics experiments, including RNA-Seq, single cell RNA-Seq, epigenetics and more.
