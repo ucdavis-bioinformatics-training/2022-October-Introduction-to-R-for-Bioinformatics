@@ -2,7 +2,7 @@
 
 All posted times are **Pacific** time zone. At least one break will be provided each afternoon.
 
-#### Monday, Oct 25
+#### Monday, Oct 24
 
 |:----------- |:------------------- |
 |**2:00 pm**  | Zoom session starts |
@@ -13,7 +13,7 @@ All posted times are **Pacific** time zone. At least one break will be provided 
 |**4:15 pm**  | Basic data structures 1 |
 |**5:00 pm** | Zoom session ends |
 
-#### Wednesday, Oct 27
+#### Wednesday, Oct 26
 
 |:----------- |:------------------- |
 |**2:00 pm**  | Zoom session starts |
@@ -23,7 +23,7 @@ All posted times are **Pacific** time zone. At least one break will be provided 
 |**3:45 pm**  | Functions |
 |**5:00 pm** | Zoom session ends |
 
-#### Friday, Oct 29
+#### Friday, Oct 28
 
 |:----------- |:------------------- |
 |**2:00 pm**  | Zoom session starts |
