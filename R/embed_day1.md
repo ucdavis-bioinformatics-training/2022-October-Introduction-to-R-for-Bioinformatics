@@ -4,7 +4,79 @@ output:
         keep_md: TRUE
 ---
 
-<script src="../assets/js/quiz.js"></script>
+<script>
+function buildQuiz(myq, qc){
+  // variable to store the HTML output
+  const output = [];
+
+  // for each question...
+  myq.forEach(
+    (currentQuestion, questionNumber) => {
+
+      // variable to store the list of possible answers
+      const answers = [];
+
+      // and for each available answer...
+      for(letter in currentQuestion.answers){
+
+        // ...add an HTML radio button
+        answers.push(
+          `<label>
+            <input type="radio" name="question${questionNumber}" value="${letter}">
+            ${letter} :
+            ${currentQuestion.answers[letter]}
+          </label><br/>`
+        );
+      }
+
+      // add this question and its answers to the output
+      output.push(
+        `<div class="question"> ${currentQuestion.question} </div>
+        <div class="answers"> ${answers.join('')} </div><br/>`
+      );
+    }
+  );
+
+  // finally combine our output list into one string of HTML and put it on the page
+  qc.innerHTML = output.join('');
+}
+
+function showResults(myq, qc, rc){
+
+  // gather answer containers from our quiz
+  const answerContainers = qc.querySelectorAll('.answers');
+
+  // keep track of user's answers
+  let numCorrect = 0;
+
+  // for each question...
+  myq.forEach( (currentQuestion, questionNumber) => {
+
+    // find selected answer
+    const answerContainer = answerContainers[questionNumber];
+    const selector = `input[name=question${questionNumber}]:checked`;
+    const userAnswer = (answerContainer.querySelector(selector) || {}).value;
+
+    // if answer is correct
+    if(userAnswer === currentQuestion.correctAnswer){
+      // add to the number of correct answers
+      numCorrect++;
+
+      // color the answers green
+      answerContainers[questionNumber].style.color = 'lightgreen';
+    }
+    // if answer is wrong or blank
+    else{
+      // color the answers red
+      answerContainers[questionNumber].style.color = 'red';
+    }
+  });
+
+  // show number of correct answers out of total
+  rc.innerHTML = `${numCorrect} out of ${myq.length}`;
+}
+</script>
+
 
 <style type="text/css">
 .colsel {
@@ -76,15 +148,14 @@ On the homepage you can:
 
 There are many ways one can interface with R language. Here are a few popular ones:
 
-* [RStudio](https://raw.githubusercontent.com/ucdavis-bioinformatics-training/2019-March-Bioinformatics-Prerequisites/master/wednesday/Intro2R/rstudio.png)
-* [RGui](https://raw.githubusercontent.com/ucdavis-bioinformatics-training/2019-March-Bioinformatics-Prerequisites/master/wednesday/Intro2R/rgui.png)
-* Jupyter and R notebooks
-* text editors, such as vi(m), Emacs...
+* [RStudio](https://www.rstudio.com/)
+* [Jupyter](https://jupyter.org/) and R notebooks
+* text editors, such as vi/vim, Emacs...
 
 
 ### RStudio
 
-[RStudio](http://rstudio.com/) started in 2010, to offer R a more full featured integrated development environment (IDE) and modeled after matlab's IDE.
+[RStudio](https://www.rstudio.com/) started in 2010, to offer R a more full featured integrated development environment (IDE) and modeled after matlab's IDE.
 
 RStudio has many features:
 
@@ -166,15 +237,15 @@ In R, to get help information on a funciton, one may use the command:
  </thead>
 <tbody>
   <tr>
-   <td style="text-align:center;"> + </td>
+   <td style="text-align:center;"> \+ </td>
    <td style="text-align:center;"> Addition </td>
   </tr>
   <tr>
-   <td style="text-align:center;"> - </td>
+   <td style="text-align:center;"> \- </td>
    <td style="text-align:center;"> Subtraction </td>
   </tr>
   <tr>
-   <td style="text-align:center;"> * </td>
+   <td style="text-align:center;"> \* </td>
    <td style="text-align:center;"> Multiplication </td>
   </tr>
   <tr>
