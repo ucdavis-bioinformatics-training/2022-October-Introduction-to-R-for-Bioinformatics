@@ -21,6 +21,10 @@ background-color: lightyellow;
 <P style="page-break-before: always">
 
 
+
+```{=html}
+<!DOCTYPE html>
+
 <html>
 
 <head>
@@ -581,7 +585,20 @@ Logical AND
 </tr>
 <tr>
 <td style="text-align:center;">
-<div class="line-block"></div>
+|
+</td>
+<td style="text-align:center;">
+Element-wise logical OR
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+||
+</td>
+<td style="text-align:center;">
+Logical OR
+</td>
+</tr>
 </tbody>
 </table>
 <hr />

@@ -325,11 +325,11 @@ In R, to get help information on a funciton, one may use the command:
    <td style="text-align:center;"> Logical AND </td>
   </tr>
   <tr>
-   <td style="text-align:center;"> | </td>
+   <td style="text-align:center;"> \| </td>
    <td style="text-align:center;"> Element-wise logical OR </td>
   </tr>
   <tr>
-   <td style="text-align:center;"> || </td>
+   <td style="text-align:center;"> \|\| </td>
    <td style="text-align:center;"> Logical OR </td>
   </tr>
 </tbody>
