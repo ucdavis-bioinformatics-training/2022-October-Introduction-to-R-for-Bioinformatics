@@ -21,10 +21,6 @@ background-color: lightyellow;
 <P style="page-break-before: always">
 
 
-
-```{=html}
-<!DOCTYPE html>
-
 <html>
 
 <head>
