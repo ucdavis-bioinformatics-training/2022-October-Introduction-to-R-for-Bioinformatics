@@ -21,7 +21,7 @@ background-color: lightyellow;
 <P style="page-break-before: always">
 
 
-<!--html_preserve--><!DOCTYPE html>
+<!--html_preserve-->
 
 <html>
 
