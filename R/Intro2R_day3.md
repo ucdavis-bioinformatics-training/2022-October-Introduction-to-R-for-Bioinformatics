@@ -22,9 +22,6 @@ background-color: lightyellow;
 
 
 
-```{=html}
-<!DOCTYPE html>
-
 <html>
 
 <head>
@@ -925,6 +922,5 @@ $(document).ready(function () {
 
 </body>
 </html>
-```
 
 
