@@ -4,7 +4,79 @@ output:
         keep_md: TRUE
 ---
 
-<script src="../assets/js/quiz.js"></script>
+<script>
+function buildQuiz(myq, qc){
+  // variable to store the HTML output
+  const output = [];
+
+  // for each question...
+  myq.forEach(
+    (currentQuestion, questionNumber) => {
+
+      // variable to store the list of possible answers
+      const answers = [];
+
+      // and for each available answer...
+      for(letter in currentQuestion.answers){
+
+        // ...add an HTML radio button
+        answers.push(
+          `<label>
+            <input type="radio" name="question${questionNumber}" value="${letter}">
+            ${letter} :
+            ${currentQuestion.answers[letter]}
+          </label><br/>`
+        );
+      }
+
+      // add this question and its answers to the output
+      output.push(
+        `<div class="question"> ${currentQuestion.question} </div>
+        <div class="answers"> ${answers.join('')} </div><br/>`
+      );
+    }
+  );
+
+  // finally combine our output list into one string of HTML and put it on the page
+  qc.innerHTML = output.join('');
+}
+
+function showResults(myq, qc, rc){
+
+  // gather answer containers from our quiz
+  const answerContainers = qc.querySelectorAll('.answers');
+
+  // keep track of user's answers
+  let numCorrect = 0;
+
+  // for each question...
+  myq.forEach( (currentQuestion, questionNumber) => {
+
+    // find selected answer
+    const answerContainer = answerContainers[questionNumber];
+    const selector = `input[name=question${questionNumber}]:checked`;
+    const userAnswer = (answerContainer.querySelector(selector) || {}).value;
+
+    // if answer is correct
+    if(userAnswer === currentQuestion.correctAnswer){
+      // add to the number of correct answers
+      numCorrect++;
+
+      // color the answers green
+      answerContainers[questionNumber].style.color = 'lightgreen';
+    }
+    // if answer is wrong or blank
+    else{
+      // color the answers red
+      answerContainers[questionNumber].style.color = 'red';
+    }
+  });
+
+  // show number of correct answers out of total
+  rc.innerHTML = `${numCorrect} out of ${myq.length}`;
+}
+</script>
+
 
 <style type="text/css">
 .colsel {
@@ -151,25 +223,25 @@ lapply(1:dim(data3)[1], function(x){sum(data3[x,])})
 
 ```
 ## [[1]]
-## [1] 0.06201155
+## [1] 4.803919
 ## 
 ## [[2]]
-## [1] -5.559323
+## [1] -3.158947
 ## 
 ## [[3]]
-## [1] -3.540024
+## [1] -2.389162
 ## 
 ## [[4]]
-## [1] -4.56483
+## [1] 1.137494
 ## 
 ## [[5]]
-## [1] -0.2144674
+## [1] 1.858954
 ## 
 ## [[6]]
-## [1] 4.154387
+## [1] 2.66902
 ## 
 ## [[7]]
-## [1] 2.237189
+## [1] 0.326932
 ```
 
 ```{.r .colsel}
@@ -178,8 +250,7 @@ apply(data3, MARGIN=1, sum)
 ```
 
 ```
-## [1]  0.06201155 -5.55932253 -3.54002380 -4.56483039 -0.21446740  4.15438732
-## [7]  2.23718887
+## [1]  4.803919 -3.158947 -2.389162  1.137494  1.858954  2.669020  0.326932
 ```
 
 ```{.r .colsel}
@@ -191,15 +262,11 @@ lapply(1:dim(data3)[1], function(x){log10(sum(data3[x,]))})
 ## Warning in FUN(X[[i]], ...): NaNs produced
 
 ## Warning in FUN(X[[i]], ...): NaNs produced
-
-## Warning in FUN(X[[i]], ...): NaNs produced
-
-## Warning in FUN(X[[i]], ...): NaNs produced
 ```
 
 ```
 ## [[1]]
-## [1] -1.207527
+## [1] 0.6815956
 ## 
 ## [[2]]
 ## [1] NaN
@@ -208,16 +275,16 @@ lapply(1:dim(data3)[1], function(x){log10(sum(data3[x,]))})
 ## [1] NaN
 ## 
 ## [[4]]
-## [1] NaN
+## [1] 0.05594897
 ## 
 ## [[5]]
-## [1] NaN
+## [1] 0.2692687
 ## 
 ## [[6]]
-## [1] 0.618507
+## [1] 0.4263518
 ## 
 ## [[7]]
-## [1] 0.3497026
+## [1] -0.4855426
 ```
 
 ##### The function sapply() works like function lapply(), but tries to simplify the output to the simplest data structure possible. As a matter of fact, sapply() is a "wrapper" function for lapply(). By default, it returns a vector.
@@ -234,14 +301,11 @@ sapply(1:dim(data3)[1], function(x){log10(sum(data3[x,]))})
 ## Warning in FUN(X[[i]], ...): NaNs produced
 
 ## Warning in FUN(X[[i]], ...): NaNs produced
-
-## Warning in FUN(X[[i]], ...): NaNs produced
-
-## Warning in FUN(X[[i]], ...): NaNs produced
 ```
 
 ```
-## [1] -1.2075274        NaN        NaN        NaN        NaN  0.6185070  0.3497026
+## [1]  0.68159563         NaN         NaN  0.05594897  0.26926875  0.42635180
+## [7] -0.48554260
 ```
 
 ##### If the "simplify" parameter is turned off, sapply() will produced exactly the same results as lapply(), in the form of a list. By default, "simplify" is turned on.
@@ -254,15 +318,11 @@ sapply(1:dim(data3)[1], function(x){log10(sum(data3[x,]))}, simplify=FALSE)
 ## Warning in FUN(X[[i]], ...): NaNs produced
 
 ## Warning in FUN(X[[i]], ...): NaNs produced
-
-## Warning in FUN(X[[i]], ...): NaNs produced
-
-## Warning in FUN(X[[i]], ...): NaNs produced
 ```
 
 ```
 ## [[1]]
-## [1] -1.207527
+## [1] 0.6815956
 ## 
 ## [[2]]
 ## [1] NaN
@@ -271,16 +331,16 @@ sapply(1:dim(data3)[1], function(x){log10(sum(data3[x,]))}, simplify=FALSE)
 ## [1] NaN
 ## 
 ## [[4]]
-## [1] NaN
+## [1] 0.05594897
 ## 
 ## [[5]]
-## [1] NaN
+## [1] 0.2692687
 ## 
 ## [[6]]
-## [1] 0.618507
+## [1] 0.4263518
 ## 
 ## [[7]]
-## [1] 0.3497026
+## [1] -0.4855426
 ```
 
 #### The function tapply() applys a function to each subset of a vector based on a second vector of factors.
@@ -484,10 +544,8 @@ apply(data3, 2, mean)
 ```
 
 ```
-##          V1          V2          V3          V4          V5          V6 
-## -0.53190648  0.10985395 -0.34780143  0.42192082 -0.38358330 -0.06082095 
-##          V7 
-## -0.26838496
+##         V1         V2         V3         V4         V5         V6         V7 
+##  0.1226913 -0.2051660 -0.7607856  0.5341776 -0.2552570  0.5298779  0.7842059
 ```
 
 Calculate the range of expression for each sample.
@@ -498,9 +556,9 @@ apply(data3, 2, range)
 ```
 
 ```
-##              V1         V2         V3         V4         V5        V6        V7
-## [1,] -2.1225589 -0.7515701 -1.9265720 -0.9636053 -1.3522608 -2.042141 -1.856143
-## [2,]  0.6021828  1.3272179  0.4080706  1.7183416  0.6456275  1.822219  1.272969
+##             V1        V2         V3         V4         V5        V6          V7
+## [1,] -1.674787 -2.296227 -1.8022776 -0.6058042 -1.4654320 -1.378047 -0.09334075
+## [2,]  1.368431  2.293593  0.8949951  2.1178387  0.4118876  2.013830  2.47908181
 ```
 
 Calculate the quantiles of each samples.
@@ -511,18 +569,18 @@ apply(data3, 2, quantile)
 ```
 
 ```
-##              V1          V2         V3          V4          V5          V6
-## 0%   -2.1225589 -0.75157007 -1.9265720 -0.96360526 -1.35226078 -2.04214080
-## 25%  -0.8803357 -0.24527545 -0.5412279 -0.09263055 -0.66900312 -1.12471576
-## 50%  -0.6549889 -0.07667717 -0.1321835  0.33251788 -0.58329603  0.09257517
-## 75%   0.1063455  0.38027895  0.1492653  1.02572634 -0.02857375  0.97551591
-## 100%  0.6021828  1.32721793  0.4080706  1.71834156  0.64562747  1.82221868
-##              V7
-## 0%   -1.8561426
-## 25%  -0.8980545
-## 50%  -0.4691785
-## 75%   0.4848832
-## 100%  1.2729688
+##              V1         V2         V3           V4          V5           V6
+## 0%   -1.6747869 -2.2962267 -1.8022776 -0.605804175 -1.46543200 -1.378047007
+## 25%  -0.1193922 -1.1417380 -1.2750252  0.001426541 -0.47234435 -0.007155681
+## 50%   0.4154654 -0.5427397 -1.1586864  0.224692249 -0.04662613  1.018913316
+## 75%   0.4942573  0.6963438 -0.3547399  0.999831774  0.12903002  1.034380033
+## 100%  1.3684305  2.2935931  0.8949951  2.117838750  0.41188759  2.013830440
+##               V7
+## 0%   -0.09334075
+## 25%   0.13824887
+## 50%   0.32509342
+## 75%   1.25105458
+## 100%  2.47908181
 ```
 
 
@@ -683,11 +741,32 @@ save(list=c("x", "data"), file="Oct08.RData")
 
 ---
 
-<font color='blue'>Final challenge</font>
+Topic 10. Slightly more advanced visualization
 ====================================================
 
-Working with an R notebook, load the Iris data as we did earlier in this documentation, generate a table that lists the median of each measurement (Sepal.Length, Sepal.Width, Petal.Length, Petal.Width) for each species. Then generate a plot based on the result. Finally produce an html report with the table and the plot. Below serves as an example output.
+Working with an R notebook, we will load the Iris data as we did earlier in this documentation, generate a table that lists the median of each measurement (Sepal.Length, Sepal.Width, Petal.Length, Petal.Width) for each species. Then we will generate plots based on the result. Finally produce an html report with the table and the plot.
 
+#### Install some packages
+
+* In order to output a nice looking table in the final report, one may consider the R package kableExtra https://github.com/haozhu233/kableExtra. One may also check out the documentation at https://cran.r-project.org/web/packages/htmlTable/vignettes/
+
+* Figure 1 can be produced using base R functions: plot(), points(), axis(), text().
+
+* Figure 2 can be produced using functions in R package lattice https://cran.r-project.org/web/packages/lattice/index.html
+
+* Figure 3 can be produced using function boxplot()
+
+
+
+```{.r .colsel}
+library(lattice)
+library(reshape2)
+library(kableExtra)
+tmp <- sapply(1:4, function(x){tapply(iris[,x], iris[[5]], median)})
+colnames(tmp) <- colnames(iris)[1:4]
+nms <- colnames(tmp)
+kable(data.frame(tmp, stringsAsFactors=F), align='c') %>% kable_styling(bootstrap_options=c("striped", "hover", "responsive"), full_width=F, position="center")
+```
 
 <table class="table table-striped table-hover table-responsive" style="width: auto !important; margin-left: auto; margin-right: auto;">
  <thead>
@@ -724,25 +803,52 @@ Working with an R notebook, load the Iris data as we did earlier in this documen
 </tbody>
 </table>
 
-![](embed_day3_files/figure-html/unnamed-chunk-29-1.png)<!-- -->![](embed_day3_files/figure-html/unnamed-chunk-29-2.png)<!-- -->![](embed_day3_files/figure-html/unnamed-chunk-29-3.png)<!-- -->
+# scatter plot of mean measurement
+
+```{.r .colsel}
+species <- as.vector(levels(iris$Species))
+x <- c(1, 2, 3, 4)
+plot(x, tmp["setosa",], pch=20, col='red', ylim=c(0, max(tmp)), xaxt="n", xlab="Measurement type", ylab="Measurement results", cex.lab=1.0)
+points(x, tmp["virginica",], pch=20, col='orange')
+points(x, tmp["versicolor",], pch=20, col='blue')
+axis(1, at=x, labels=nms, las=2, cex.axis=0.7)
+text(c(1.5,1.5,1.5), c(0, 0.7, 1.4), labels=species, col=c("red", "blue", "orange"), cex=1.5)
+```
+
+![](embed_day3_files/figure-html/unnamed-chunk-30-1.png)<!-- -->
+
+# scatter plot of measurement by species
+
+```{.r .colsel}
+dd <- melt(iris)
+```
+
+```
+## Using Species as id variables
+```
+
+```{.r .colsel}
+xyplot(value ~ variable | Species, data=dd, scales=list(x=list(rot=90)), xlab="Measurements", ylab="Values")
+```
+
+![](embed_day3_files/figure-html/unnamed-chunk-31-1.png)<!-- -->
 
 
-#### <font color='red'>Hints: </font>
+# boxplot by group
 
-* In order to output a nice looking table in the final report, one may consider the R package kableExtra https://github.com/haozhu233/kableExtra. One may also check out the documentation at https://cran.r-project.org/web/packages/htmlTable/vignettes/
+```{.r .colsel}
+cols <- c("red", "blue", "orange")
+boxplot(value ~ Species + variable, data=dd, col = cols, xaxt="n", yaxt="n", xlab="Measurement Type", ylab="Values")
+axis(side=1, labels=FALSE)
+axis(side=2, las=2)
+text(x=1:12, y=par("usr")[3] - 0.85, labels=c("", "Sepal.Length", "", "", "Sepal.Width", "", "", "Petal.Length", "", "", "Petal.Width", ""), xpd=NA, srt=35, cex=1)
+legend("topright", fill=cols, legend=levels(dd$Species))
+```
 
-* Figure 1 can be produced using base R functions: plot(), points(), axis(), text().
-
-* Figure 2 can be produced using functions in R package lattice https://cran.r-project.org/web/packages/lattice/index.html
-
-* Figure 3 can be produced using function boxplot()
-
-#### **Solution:**
-
-
-<!--html_preserve--><a href="data:text/x-markdown;base64,LS0tCnRpdGxlOiAiU29sdXRpb24gZm9yIHRoZSBGaW5hbCBDaGFsbGVuZ2UiCm91dHB1dDoKICBodG1sX25vdGVib29rOgogICAgY29kZV9mb2xkaW5nOiBoaWRlCi0tLQoKCiMjIyMgKipUYWJsZSAxLioqIG1lYW4gbWVhc3VyZW1lbnRzCmBgYHtyIGVjaG89VFJVRSwgbWVzc2FnZT1GQUxTRSwgd2FybmluZz1GQUxTRSwgZXJyb3I9RkFMU0V9CmlmICghYW55KHJvd25hbWVzKGluc3RhbGxlZC5wYWNrYWdlcygpKSA9PSAia2FibGVFeHRyYSIpKXsKICBpbnN0YWxsLnBhY2thZ2VzKCJrYWJsZUV4dHJhIikKfQpsaWJyYXJ5KGthYmxlRXh0cmEpCgpkYXRhKGlyaXMpCnRtcCA8LSBzYXBwbHkoMTo0LCBmdW5jdGlvbih4KXt0YXBwbHkoaXJpc1sseF0sIGlyaXNbWzVdXSwgbWVkaWFuKX0pCmNvbG5hbWVzKHRtcCkgPC0gY29sbmFtZXMoaXJpcylbMTo0XQpubXMgPC0gY29sbmFtZXModG1wKQp0YiA8LSBrYWJsZShkYXRhLmZyYW1lKHRtcCwgc3RyaW5nc0FzRmFjdG9ycz1GKSwgYWxpZ249J2MnKQprYWJsZV9zdHlsaW5nKHRiLCBib290c3RyYXBfb3B0aW9ucz1jKCJzdHJpcGVkIiwgImhvdmVyIiwgInJlc3BvbnNpdmUiKSwgZnVsbF93aWR0aD1GLCBwb3NpdGlvbj0iY2VudGVyIikKYGBgCgojIyMjICoqRmlndXJlIDEuKiogUGxvdCBvZiB0aGUgZGF0YSBmcm9tIHRoZSB0YWJsZSBhYm92ZQoKYGBge3IgZWNobz1UUlVFLCBtZXNzYWdlPUZBTFNFLCB3YXJuaW5nPUZBTFNFLCBlcnJvcj1GQUxTRX0KIyBwbG90IG1lYW4Kc3BlY2llcyA8LSBsZXZlbHMoaXJpcyRTcGVjaWVzKQp4IDwtIGMoMSwgMiwgMywgNCkKcGxvdCh4LCB0bXBbInNldG9zYSIsXSwgcGNoPTIwLCBjb2w9J3JlZCcsIHlsaW09YygwLCBtYXgodG1wKSksIHhheHQ9Im4iLCB4bGFiPSJNZWFzdXJlbWVudCB0eXBlIiwgeWxhYj0iTWVhc3VyZW1lbnQgcmVzdWx0cyIsIGNleC5sYWI9MS4wKQpwb2ludHMoeCwgdG1wWyJ2aXJnaW5pY2EiLF0sIHBjaD0yMCwgY29sPSdvcmFuZ2UnKQpwb2ludHMoeCwgdG1wWyJ2ZXJzaWNvbG9yIixdLCBwY2g9MjAsIGNvbD0nYmx1ZScpCmF4aXMoMSwgYXQ9eCwgbGFiZWxzPW5tcywgbGFzPTIsIGNleC5heGlzPTAuNykKdGV4dChjKDEuNSwxLjUsMS41KSwgYygwLCAwLjcsIDEuNCksIGxhYmVscz1zcGVjaWVzLCBjb2w9YygicmVkIiwgImJsdWUiLCAib3JhbmdlIiksIGNleD0xLjUpCmBgYAoKIyMjIyAqKkZpZ3VyZSAyLioqIFNjYXR0ZXIgcGxvdCBvZiBtZWFzdXJlbWVudCBkYXRhIGZvciBlYWNoIHNwZWNpZXMKCmBgYHtyIGVjaG89VFJVRSwgbWVzc2FnZT1GQUxTRSwgd2FybmluZz1GQUxTRSwgZXJyb3I9RkFMU0V9CiMgbGF0dGljZSBwbG90CmlmICghYW55KHJvd25hbWVzKGluc3RhbGxlZC5wYWNrYWdlcygpKSA9PSAibGF0dGljZSIpKXsKICBpbnN0YWxsLnBhY2thZ2VzKCJsYXR0aWNlIikKfQpsaWJyYXJ5KGxhdHRpY2UpCgppZiAoIWFueShyb3duYW1lcyhpbnN0YWxsZWQucGFja2FnZXMoKSkgPT0gInJlc2hhcGUyIikpewogIGluc3RhbGwucGFja2FnZXMoInJlc2hhcGUyIikKfQpsaWJyYXJ5KHJlc2hhcGUyKQoKIyBjcmVhdGUgYSBuZXcgZGF0YWZyYW1lIHVzaW5nIG1lbHQgZnVuY3Rpb24gZnJvbSByZXNoYXBlMgpkZCA8LSBtZWx0KGlyaXMpCnh5cGxvdCh2YWx1ZSB+IHZhcmlhYmxlIHwgU3BlY2llcywgZGF0YT1kZCwgc2NhbGVzPWxpc3QoeD1saXN0KHJvdD05MCkpLCB4bGFiPSJNZWFzdXJlbWVudHMiLCB5bGFiPSJWYWx1ZXMiKQpgYGAKCiMjIyMgKipGaWd1cmUgMy4qKiBCb3hwbG90IG9mIG1lYXN1cmVtZW50IGRhdGEKCmBgYHtyIGVjaG89VFJVRSwgbWVzc2FnZT1GQUxTRSwgd2FybmluZz1GQUxTRSwgZXJyb3I9RkFMU0V9CiMgYm94cGxvdCBieSBncm91cApjb2xzIDwtIGMoInJlZCIsICJibHVlIiwgIm9yYW5nZSIpCmJveHBsb3QodmFsdWUgfiBTcGVjaWVzICsgdmFyaWFibGUsIGRhdGE9ZGQsIGNvbCA9IGNvbHMsIHhheHQ9Im4iLCB5YXh0PSJuIiwgeGxhYj0iTWVhc3VyZW1lbnQgVHlwZSIsIHlsYWI9IlZhbHVlcyIpCmF4aXMoc2lkZT0xLCBsYWJlbHM9RkFMU0UpCmF4aXMoc2lkZT0yLCBsYXM9MikKdGV4dCh4PTE6MTIsIHk9cGFyKCJ1c3IiKVszXSAtIDAuODUsIGxhYmVscz1jKCIiLCAiU2VwYWwuTGVuZ3RoIiwgIiIsICIiLCAiU2VwYWwuV2lkdGgiLCAiIiwgIiIsICJQZXRhbC5MZW5ndGgiLCAiIiwgIiIsICJQZXRhbC5XaWR0aCIsICIiKSwgeHBkPU5BLCBzcnQ9NDUsIGNleD0xKQpsZWdlbmQoInRvcHJpZ2h0IiwgZmlsbD1jb2xzLCBsZWdlbmQ9bGV2ZWxzKGRkJFNwZWNpZXMpKQoKYGBgCgoKCg==" download="solution.Rmd">Download solution.Rmd</a><!--/html_preserve-->
+![](embed_day3_files/figure-html/unnamed-chunk-32-1.png)<!-- -->
 
 
-<br>
+
+
 
 
