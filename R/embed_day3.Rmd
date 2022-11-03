@@ -1,7 +1,8 @@
 ---
 output:
-    html_document:
-        keep_md: TRUE
+  html_document:
+    keep_md: yes
+  pdf_document: default
 ---
 
 <script>
@@ -157,6 +158,7 @@ There is a **while** loop in R similarly as in command line or any other program
 Here is the same row sum calculation using a while loop:
 
 ```{r}
+i=1 # need to initialize i
 while (i <= dim(my_matrix)[1]){
   out <- sum(my_matrix[i,])
   print(out)
